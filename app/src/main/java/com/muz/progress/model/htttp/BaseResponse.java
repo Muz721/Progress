@@ -7,10 +7,11 @@ package com.muz.progress.model.htttp;
  */
 
  class BaseResponse<T> {
-    private int start;
+    int start;
     String message="";
     T subjects;
     boolean isSuccess(){
         return start == 0;
     }
+
 }
