@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:icon="@drawable/ic_new"
+    android:id="@+id/gank_menu_newest"
+    app:showAsAction="ifRoom"
+    android:enabled="true"
+    android:title="最新"/>
+    <item android:icon="@drawable/ic_classify_1"
+        android:id="@+id/gank_menu_classify"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:title="分类"/>
+    <item android:icon="@drawable/ic_welfare"
+        android:id="@+id/gank_menu_welfare"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:title="福利"/>
+    <!--闲读界面展示待设计-->
+    <!--<item android:icon="@drawable/ic_read"-->
+        <!--android:id="@+id/gank_menu_read"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--android:enabled="true"-->
+        <!--android:title="闲读"/>-->
+</menu>
