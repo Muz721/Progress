@@ -51,6 +51,13 @@ public class GankLoader extends ObjectLoader implements IGankLoader {
     public Observable<LinkedHashMap<String, List<GankItemBean>>> gankDayData(String date){
         return observe(gankApi.gankDayData(date).map(new PayLoad<LinkedHashMap<String, List<GankItemBean>>>()));
     }
+    /**
+     * 获取最新数据
+     * @return         返回数据
+     */
+    public Observable<LinkedHashMap<String, List<GankItemBean>>> gankTodayData(){
+        return observe(gankApi.gankTodayData().map(new PayLoad<LinkedHashMap<String, List<GankItemBean>>>()));
+    }
     public Observable<List<GankItemBean>> gankClassifyData(String classify, int number, int page){
         return observe(gankApi.gankClassifyData(classify, number, page).map(new PayLoad<List<GankItemBean>>()));
     }

@@ -44,6 +44,13 @@ public interface GankApi {
     Observable<GankBaseResponse<LinkedHashMap<String, List<GankItemBean>>>> gankDayData(@Path("date")String date);
 
     /**
+     * 获取最新数据
+     * @return         返回数据
+     */
+    @GET("today")
+    Observable<GankBaseResponse<LinkedHashMap<String, List<GankItemBean>>>> gankTodayData();
+
+    /**
      * 获取分类数据
      * @param classify    分类
      * @param number      数量

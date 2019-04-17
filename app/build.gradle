@@ -14,6 +14,12 @@ android {
         ndk {
             abiFilters "armeabi"
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
     packagingOptions {
         exclude "lib/mips/librealm-jni.so"
@@ -59,5 +65,8 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
     implementation rootProject.ext.dependencies["gif_drawable"]
     implementation rootProject.ext.dependencies["glide"]
+
+    implementation rootProject.ext.dependencies["arouter-api"]
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1249_43610_sharewithdownload_withoutGame_obfs_20180608_114954.jar')
 }

@@ -3,6 +3,8 @@ package com.muz.progress.app;
 import android.app.Activity;
 import android.app.Application;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.muz.progress.BuildConfig;
 import com.muz.progress.di.component.ActivityComponent;
 import com.muz.progress.di.component.ApiComponent;
 import com.muz.progress.di.component.AppComponent;
@@ -53,6 +55,14 @@ public class MyApplication extends Application{
         if (appComponent == null){
             appComponent = DaggerAppComponent.create();
         }
+
+
+        //添加ARouter路由
+        if (BuildConfig.DEBUG){
+            ARouter.openLog();
+            ARouter.openDebug();
+        }
+            ARouter.init(this);//初始化
 
         //初始化 x5内核
         new Thread(new Runnable() {

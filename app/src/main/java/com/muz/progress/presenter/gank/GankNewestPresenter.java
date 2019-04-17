@@ -39,7 +39,7 @@ public class GankNewestPresenter extends Rxpresenter<GankNewestContract.View> im
      */
     @Override
     public void getGankNewestData(String date) {
-        addSubscribe(gankLoader.gankDayData(date).subscribeWith(
+        addSubscribe(gankLoader.gankTodayData().subscribeWith(
                 new CommonSubscriber<LinkedHashMap<String, List<GankItemBean>>>(view) {
             @Override
             public void onNext(LinkedHashMap<String, List<GankItemBean>> hashMap) {
