@@ -1,13 +1,22 @@
 apply plugin: 'com.android.application'
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
-
+def versionPropsFile = rootProject.file('version.properties')
+    if (versionPropsFile.canRead()){
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def code = versionProps['versionCode'].toInteger()
+        versionProps['versionCode'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(),null)
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        versionCode System.getenv().BUILD_NUMBER as Integer ?: increaseVersionCode()
+        versionName System.getenv().VERSION ?: rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
@@ -20,26 +29,124 @@ android {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
+
+
+        manifestPlaceholders = [
+                BAIDU_APP_KEY: "bUHbQCXpQYy1jx1ChQ5CjQps5qSSY1Fu",
+                APP_ICON     : "@mipmap/ic_launcher",
+                UMENG_APPKEY : "",
+                UMENG_CHANNEL: "Progress",
+        ]
+
+        buildConfigField("boolean", "LOTTERY_RELEASE", "false")
+        buildConfigField("boolean", "LOTTERY_ALPHA", "true")
+    }
+    }else {
+        throw new GradleException("Could not read version.properties!")
+    }
+    signingConfigs{
+        release {
+            def filePath = rootProject.projectDir.path + File.separator + keystoreProperties['storeFile']
+            storeFile file(filePath)
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+    flavorDimensions("default")
+    productFlavors{
+        fir{
+            manifestPlaceholders = [UMENG_CHANNEL: "fir"]
+        }
+        github{
+            manifestPlaceholders = [UMENG_CHANNEL: "github"]
+        }
     }
     packagingOptions {
         exclude "lib/mips/librealm-jni.so"
         exclude "lib/x86/librealm-jni.so"
         exclude "lib/x86_64/librealm-jni.so"
     }
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-            universalApk true
-        }
-    }
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//            universalApk true
+//        }
+//    }
     buildTypes {
-        release {
-            minifyEnabled false
+        debug {
+            signingConfig signingConfigs.release
+        }
+        beta{
+            manifestPlaceholders = [
+                    APP_ICON    : "@mipmap/ic_launcher",
+                    UMENG_APPKEY: rootProject.ext.umengkey
+            ]
+            buildConfigField("boolean", "LOTTERY_RELEASE", "false")
+            buildConfigField("boolean", "LOTTERY_BETA", "true")
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+            matchingFallbacks = ['release']
+        }
+        release {
+            manifestPlaceholders = [
+                    APP_ICON    : "@mipmap/ic_launcher",
+                    UMENG_APPKEY: rootProject.ext.umengkey
+            ]
+            buildConfigField("boolean", "LOTTERY_RELEASE", "true")
+            buildConfigField("boolean", "LOTTERY_BETA", "false")
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+    applicationVariants.all { variant ->
+
+        variant.outputs.all { output ->
+
+            def outputFile = output.outputFile
+
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+
+                if (variant.buildType.name == 'beta') {
+                    def fileName = "${rootProject.ext.name}_${versionName}_${variant.productFlavors[0].name}_beta.apk"
+                    outputFileName = new File(fileName)
+                }  else if (variant.buildType.name == 'release') {
+                    variant.productFlavors.each { flavor ->
+                        def fileName = "${rootProject.ext.name}_${versionName}_${flavor.name}.apk"
+                        outputFileName = new File(fileName)
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+def increaseVersionCode() {
+    def versionPropsFile = rootProject.file('version.properties')
+    def code = 0
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        code = versionProps['versionCode'].toInteger()
+        gradle.startParameter.taskNames.each { taskName ->
+            if (taskName.contains("assembleRelease") || taskName.contains("assembleBeta")) {
+                code++
+                versionProps['versionCode'] = code.toString()
+                versionProps.store(versionPropsFile.newWriter(), null)
+            }
+        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+    return code
 }
 
 dependencies {
@@ -65,8 +172,9 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
     implementation rootProject.ext.dependencies["gif_drawable"]
     implementation rootProject.ext.dependencies["glide"]
-
     implementation rootProject.ext.dependencies["arouter-api"]
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1249_43610_sharewithdownload_withoutGame_obfs_20180608_114954.jar')
+    implementation files('libs/umeng-common-2.0.2.jar')
+    implementation files('libs/umeng-analytics-8.0.2.jar')
 }

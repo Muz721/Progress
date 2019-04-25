@@ -21,6 +21,7 @@ import com.muz.progress.base.BaseActivity;
 import com.muz.progress.app.MyApplication;
 import com.muz.progress.ui.gank.fragment.GankFragment;
 import com.muz.progress.util.UIUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -78,6 +79,7 @@ setToolBar(toolBar,"干货集中营");
                     }
                 });
         mainNavigation.addHeaderView(view);
+        MobclickAgent.setSessionContinueMillis(1000*40);
 //        mainNavigation.add
     }
 

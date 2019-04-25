@@ -17,6 +17,7 @@ import com.muz.progress.di.component.DaggerFragmentComponent;
 import com.muz.progress.di.component.FragmentComponent;
 import com.muz.progress.di.module.ApiModule;
 import com.tencent.smtt.sdk.QbSdk;
+import com.umeng.commonsdk.UMConfigure;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -82,6 +83,7 @@ public class MyApplication extends Application{
 
             }
         }).start();
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
     }
 public AppComponent getAppComponent(){
         return appComponent;

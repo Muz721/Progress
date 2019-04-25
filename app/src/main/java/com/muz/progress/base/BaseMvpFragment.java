@@ -3,6 +3,7 @@ package com.muz.progress.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Toast;
 
 import com.muz.progress.di.module.FragmentModule;
 

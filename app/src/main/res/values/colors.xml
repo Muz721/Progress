@@ -12,4 +12,8 @@
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="title">#00BFFF</color>
     <color name="color_red">#FFFF0000</color>
+
+
+
+    <color name="ic_launcher_background">#FFFFFF</color>
 </resources>
