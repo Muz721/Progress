@@ -1,5 +1,5 @@
 ## APK
- [Progress](https://github.com/Muz721/Progress/blob/master/progress_1.3.0_github.apk)
+ [Progress](https://github.com/Muz721/Progress/raw/master/progress_1.3.0_github.apk)
 
 
 
