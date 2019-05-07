@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Progress  </string>
+    <string name="app_name">Progress</string>
     <string name="app_intro">An app that records the learning process</string>
 
     <string name="zhihu">知乎日报</string>

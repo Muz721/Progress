@@ -228,6 +228,15 @@
  -keep class org.json.** { *; }
 
 
+ -dontwarn cn.jpush.**
+ -keep class cn.jpush.** { *; }
+ -keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+
+ -dontwarn cn.jiguang.**
+ -keep class cn.jiguang.** { *; }
+ -keep class com.linkface.** { *; }
+
+
 
  -keep class android.support.v4.app.NotificationCompat { *; }
  -keep class android.support.v4.app.NotificationCompat$Builder { *; }

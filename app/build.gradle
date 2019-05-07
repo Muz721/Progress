@@ -36,6 +36,10 @@ def versionPropsFile = rootProject.file('version.properties')
                 APP_ICON     : "@mipmap/ic_launcher",
                 UMENG_APPKEY : "",
                 UMENG_CHANNEL: "Progress",
+
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "a1a9d06bdf693b8298526a37", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
 
         buildConfigField("boolean", "LOTTERY_RELEASE", "false")
@@ -177,4 +181,7 @@ dependencies {
     implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1249_43610_sharewithdownload_withoutGame_obfs_20180608_114954.jar')
     implementation files('libs/umeng-common-2.0.2.jar')
     implementation files('libs/umeng-analytics-8.0.2.jar')
+
+    implementation 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:2.0.0'  // 此处以JCore 2.0.0 版本为例。
 }

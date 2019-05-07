@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by Administrator on 2018/6/13.
  */
@@ -84,6 +86,8 @@ public class MyApplication extends Application{
             }
         }).start();
         UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
+        JPushInterface.setDebugMode(BuildConfig.DEBUG);
+        JPushInterface.init(this);
     }
 public AppComponent getAppComponent(){
         return appComponent;
